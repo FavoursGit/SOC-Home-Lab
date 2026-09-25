@@ -1,41 +1,106 @@
-# SOC Home Lab – Splunk & Sysmon
+# SOC Home Lab
 
-A SOC home lab built to practice log analysis, detection engineering, alerting, and incident investigation using Splunk.
+This project is a small SOC home lab I built using Splunk, Windows and Sysmon.
 
-## Lab Overview
+The goal was to learn how a SIEM collects logs, detects suspicious activity and helps investigate security events.
 
-The lab collects Windows security logs and Sysmon telemetry from a Windows endpoint and forwards them to Splunk Enterprise running on Kali Linux.
+## Lab Setup
+
+- Windows 11 – monitored endpoint
+- Sysmon – process monitoring
+- Splunk Universal Forwarder – sends logs
+- Kali Linux – hosts Splunk Enterprise
+- Splunk Enterprise – log analysis and alerts
 
 ### Architecture
 
-Windows Endpoint  
+Windows 11  
 ↓  
 Windows Event Logs + Sysmon  
 ↓  
 Splunk Universal Forwarder  
 ↓  
-Splunk Enterprise  
-↓  
-Detections, Alerts & Dashboard
+Splunk Enterprise (Kali Linux)
 
-## Tools Used
+## What I Monitored
 
-- Splunk Enterprise
-- Splunk Universal Forwarder
-- Sysmon
-- Windows Event Logs
-- Kali Linux
-- VirtualBox
-- SPL
+I collected Windows Security logs and Sysmon events in Splunk.
 
-## Detections
+Some of the main events I looked at were:
 
-### Multiple Failed Logins
+- 4624 – Successful login
+- 4625 – Failed login
+- Sysmon Event ID 1 – Process creation
 
-Detects accounts with 3 or more failed login attempts within 5 minutes.
+<img width="1274" height="452" alt="image" src="https://github.com/user-attachments/assets/0744b17a-b373-4eb6-a021-a44fa07e9a46" />
+
+
+## Failed Login Detection
+
+I created an SPL search to detect 3 or more failed logins within 5 minutes.
 
 ```spl
 index=main source="WinEventLog:Security" EventCode=4625
 | bin _time span=5m
 | stats count by Account_Name, _time
 | where count >= 3
+```
+
+I then turned this into a scheduled Splunk alert.
+
+![Failed Login Alert](screenshots/failed-login-alert.png)
+
+## PowerShell Detection
+
+I used Sysmon to detect PowerShell processes using `ExecutionPolicy Bypass`.
+
+```spl
+index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
+"<EventID>1</EventID>"
+"powershell.exe"
+"ExecutionPolicy Bypass"
+```
+
+![PowerShell Detection](screenshots/powershell-detection.png)
+
+## Dashboard
+
+I created a dashboard to monitor:
+
+- Failed logins over time
+- Failed logins by account
+- Suspicious PowerShell activity
+- Windows security events
+
+![SOC Dashboard](screenshots/soc-dashboard.png)
+
+## Investigation
+
+I also simulated suspicious PowerShell activity and investigated it using Sysmon.
+
+I was able to identify the PowerShell command and see that it launched `notepad.exe` as a child process.
+
+```text
+powershell.exe
+    └── notepad.exe
+```
+
+![Investigation](screenshots/incident-investigation.png)
+
+## What I Learned
+
+This project gave me practical experience with:
+
+- Splunk and SPL
+- Windows Event Logs
+- Sysmon
+- Creating detection rules
+- Configuring alerts
+- Building dashboards
+- Investigating process activity
+
+## Files
+
+- `detections/` – SPL detection queries
+- `config/` – Splunk configuration
+- `screenshots/` – Lab evidence

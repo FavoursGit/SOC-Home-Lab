@@ -32,7 +32,8 @@ Some of the main events I looked at were:
 - 4625 – Failed login
 - Sysmon Event ID 1 – Process creation
 
-<img width="1274" height="452" alt="image" src="https://github.com/user-attachments/assets/0744b17a-b373-4eb6-a021-a44fa07e9a46" />
+<img width="1361" height="593" alt="image" src="https://github.com/user-attachments/assets/c43c1c8e-d640-4053-9754-284a517b5768" />
+
 
 
 ## Failed Login Detection
@@ -48,7 +49,9 @@ index=main source="WinEventLog:Security" EventCode=4625
 
 I then turned this into a scheduled Splunk alert.
 
-![Failed Login Alert](screenshots/failed-login-alert.png)
+<img width="1363" height="467" alt="image" src="https://github.com/user-attachments/assets/28cca5da-f106-447a-9a0f-852805164eae" />
+
+
 
 ## PowerShell Detection
 
@@ -61,7 +64,8 @@ index=main source="WinEventLog:Microsoft-Windows-Sysmon/Operational"
 "ExecutionPolicy Bypass"
 ```
 
-![PowerShell Detection](screenshots/powershell-detection.png)
+<img width="883" height="444" alt="image" src="https://github.com/user-attachments/assets/24b116bf-ea9f-4282-90ac-a22e4694ee90" />
+
 
 ## Dashboard
 
@@ -72,7 +76,13 @@ I created a dashboard to monitor:
 - Suspicious PowerShell activity
 - Windows security events
 
-![SOC Dashboard](screenshots/soc-dashboard.png)
+<img width="1369" height="242" alt="image" src="https://github.com/user-attachments/assets/5f31c869-1718-4cbd-9285-aafce6ce0404" />
+<img width="1084" height="350" alt="image" src="https://github.com/user-attachments/assets/fa7d6834-d4a9-4225-ae17-ef4ccd92bb4a" />
+<img width="1109" height="348" alt="image" src="https://github.com/user-attachments/assets/75cd2ae9-1364-4438-8aa6-0e65f23eaa2c" />
+<img width="1096" height="466" alt="image" src="https://github.com/user-attachments/assets/b3c3b199-095d-421c-be08-adfa602f450e" />
+<img width="1101" height="293" alt="image" src="https://github.com/user-attachments/assets/3bb0bf61-5acf-427d-a1ed-0732fa2f2a05" />
+
+
 
 ## Investigation
 
@@ -85,7 +95,8 @@ powershell.exe
     └── notepad.exe
 ```
 
-![Investigation](screenshots/incident-investigation.png)
+<img width="1365" height="552" alt="image" src="https://github.com/user-attachments/assets/2628831c-12df-42f5-8518-df6508ed8dcd" />
+
 
 ## What I Learned
 
@@ -98,9 +109,3 @@ This project gave me practical experience with:
 - Configuring alerts
 - Building dashboards
 - Investigating process activity
-
-## Files
-
-- `detections/` – SPL detection queries
-- `config/` – Splunk configuration
-- `screenshots/` – Lab evidence

@@ -109,3 +109,5 @@ This project gave me practical experience with:
 - Configuring alerts
 - Building dashboards
 - Investigating process activity
+
+I can definitely say this was a beneficial learning experience to become a part of the blue team

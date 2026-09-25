@@ -1,5 +1,0 @@
-index=main source="WinEventLog:Security" EventCode=4625
-| bin _time span=5m
-| stats count by Account_Name, _time
-| where count >= 3
-| sort - count
